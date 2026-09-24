@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infintin Mobility Solutions - Rare-Earth-Free EV Motors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e7eb;
+            overflow-x: hidden;
+        }
+        #hero-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            cursor: grab;
+            filter: drop-shadow(0 0 1rem rgba(4, 171, 235, 0.35));
+        }
+        #hero-canvas:active {
+            cursor: grabbing;
+        }
+        .nav-link {
+            color: #9ca3af;
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: rgb(4, 171, 235);
+            text-shadow: 0 0 8px rgba(4, 171, 235, 0.4);
+        }
+        .logo-glow {
+            filter: drop-shadow(0 0 8px rgba(4, 171, 235, 0.5));
+        }
+        .text-brand-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #04abeb 50%, #0284c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .bg-glass {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .bg-glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bg-glass-card:hover {
+            border-color: rgba(4, 171, 235, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(4, 171, 235, 0.3);
+            transform: translateY(-2px);
+        }
+        .slider-container {
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .product-card {
+            flex: 0 0 100%;
+        }
+        @media (min-width: 768px) {
+            .product-card {
+                flex: 0 0 50%;
+            }
+        }
+        @media (min-width: 1024px) {
+            .product-card {
+                flex: 0 0 33.3333%;
+            }
+        }
+        .team-card {
+            position: relative;
+            overflow: hidden;
+            height: 340px;
+        }
+        .team-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(4, 76, 200, 0.95) 0%, rgba(2, 44, 118, 0.98) 100%);
+            color: white;
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .team-card:hover .team-card-content {
+            transform: translateY(0);
+        }
+        .error-message {
+            color: #f87171;
+            font-size: 0.8125rem;
+            margin-top: 0.35rem;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #04abeb;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[rgb(4,171,235)] selection:text-black">
+
+    <header id="header" class="bg-black/80 backdrop-blur-md fixed w-full top-0 z-50 border-b border-gray-800/80 transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- <a href="#" class="flex items-center gap-3 text-2xl font-black text-white tracking-wider group">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[rgb(4,171,235)] to-blue-700 flex items-center justify-center text-black font-extrabold text-xl shadow-lg shadow-[rgba(4,171,235,0.3)] group-hover:scale-105 transition-transform">
+                    iM
+                </div>
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-100 to-gray-400 font-extrabold">INFINTIN</span>
+            </a> -->
+            <a href="#" class="text-2xl font-bold text-white">
+                <!-- Your Logo -->
+                <img src="logov1.png" alt="Infintin Mobility Solutions Logo" class="h-14" onerror="this.onerror=null;this.src='https://placehold.co/250x56/0a0a0a/ffffff?text=Infintin+Mobility';">
+            </a>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold">
+                <a href="#about" class="nav-link">About Us</a>
+                <a href="#problem" class="nav-link">Challenge</a>
+                <a href="#products" class="nav-link">Products</a>
+                <a href="#configurator" class="nav-link">Motor Selector</a>
+                <a href="#technology" class="nav-link">Technology</a>
+                <a href="#team" class="nav-link">Team</a>
+                <a href="#backed-by" class="nav-link">Partners</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </nav>
+
+            <div class="hidden md:flex items-center gap-4">
+                <a href="#contact" class="border border-[rgb(4,171,235)] text-[rgb(4,171,235)] font-semibold text-sm py-2 px-5 rounded-lg hover:bg-[rgb(4,171,235)] hover:text-black transition-all duration-300 shadow-sm shadow-[rgba(4,171,235,0.2)]">
+                    Get in Touch
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-button" aria-label="Toggle Navigation Menu" class="md:hidden text-gray-300 hover:text-white focus:outline-none p-2 rounded-lg bg-gray-900 border border-gray-800">
+                <svg id="menu-icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+                <svg id="menu-icon-close" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Nav Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black/95 border-b border-gray-800 px-6 py-6 space-y-4">
+            <a href="#about" class="block text-gray-300 font-medium hover:text-[rgb(4,171,235)] transition-colors">About Us</a>
+            <a href="#problem" class="block text-gray-300 font-medium hover:text-[rgb(4,171,235)] transition-colors">Problem</a>
+            <a href="#products" class="block text-gray-300 font-medium hover:text-[rgb(4,171,235)] transition-colors">Products</a>
+            <a href="#configurator" class="block text-gray-300 font-medium hover:text-[rgb(4,171,235)] transition-colors">Motor Selector</a>
+            <a href="#technology" class="block text-gray-300 font-medium hover:text-[rgb(4,171,235)] transition-colors">Technology</a>
+            <a href="#team" class="block text-gray-300 font-medium hover:text-[rgb(4,171,235)] transition-colors">Our Team</a>
+            <a href="#backed-by" class="block text-gray-300 font-medium hover:text-[rgb(4,171,235)] transition-colors">Backed By</a>
+            <a href="#contact" class="block text-gray-300 font-medium hover:text-[rgb(4,171,235)] transition-colors">Contact</a>
+            <a href="#contact" class="block text-center border border-[rgb(4,171,235)] text-[rgb(4,171,235)] font-semibold py-2.5 px-4 rounded-lg hover:bg-[rgb(4,171,235)] hover:text-black transition-colors">
+                Get in Touch
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-black pt-20">
+            <!-- Subtle Radial Gradient Background -->
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(4,171,235,0.12)_0%,transparent_70%)] pointer-events-none"></div>
+
+            <!-- COMPACT FLOATING 3D ICON / EXPANDABLE VIEWER -->
+            <div id="viewer-widget" class="absolute top-28 right-6 z-30 transition-all duration-300">
+                <div id="widget-card" class="bg-gray-900/90 backdrop-blur-xl border border-[rgb(4,171,235)]/40 rounded-2xl shadow-2xl shadow-[rgba(4,171,235,0.25)] overflow-hidden transition-all duration-500 ease-in-out w-24 h-24 flex flex-col group cursor-pointer hover:border-[rgb(4,171,235)] hover:scale-105">
+                    
+                    <!-- 3D Canvas Container -->
+                    <div id="canvas-container" class="relative w-full h-full flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-900 to-black">
+                        <canvas id="hero-canvas"></canvas>
+                        
+                        <!-- Floating Badge when Compact -->
+                        <div id="compact-badge" class="absolute bottom-1.5 inset-x-0 flex justify-center pointer-events-none">
+                            <span class="bg-black/80 backdrop-blur-md text-[9px] font-bold text-[rgb(4,171,235)] px-2 py-0.5 rounded-full border border-[rgb(4,171,235)]/40 flex items-center gap-1 shadow-md">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[rgb(4,171,235)] animate-pulse"></span> 3D Icon
+                            </span>
+                        </div>
+
+                        <!-- Shrink / Close Button when Expanded -->
+                        <button id="btn-shrink" class="hidden absolute top-2 right-2 bg-gray-900/80 hover:bg-gray-800 text-gray-300 hover:text-white p-1.5 rounded-lg border border-gray-700 transition-all z-20" title="Shrink to Icon">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+
+                    <!-- Interactive Controls Panel (Visible when Expanded) -->
+                    <div id="expanded-controls" class="hidden p-4 bg-gray-950/95 border-t border-gray-800 flex flex-col gap-2.5 text-xs">
+                        <div class="flex items-center justify-between pb-1 border-b border-gray-800/80">
+                            <span class="text-gray-300 font-bold uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-[rgb(4,171,235)]"></span> 3D Interactive View
+                            </span>
+                            <span class="text-[10px] text-gray-500 italic">Drag to rotate</span>
+                        </div>
+                        <button id="btn-explode-toggle" class="bg-[rgb(4,171,235)]/20 hover:bg-[rgb(4,171,235)] text-[rgb(4,171,235)] hover:text-black border border-[rgb(4,171,235)]/50 px-3 py-1.5 rounded-lg transition-all text-left flex items-center justify-between gap-2 font-semibold">
+                            <span>Exploded View</span>
+                            <span id="explode-status" class="w-2 h-2 rounded-full bg-[rgb(4,171,235)]"></span>
+                        </button>
+                        <button id="btn-rotate-toggle" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-lg transition-all text-left flex items-center justify-between gap-2 font-semibold">
+                            <span>Auto Rotate</span>
+                            <span id="rotate-status" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        </button>
+                        <button id="btn-reset-cam" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-lg transition-all text-left font-semibold">
+                            Reset View
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Text Content -->
+            <div class="hero-content container mx-auto px-6 text-center py-16 relative z-10">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/60 border border-[rgb(4,171,235)]/40 text-[rgb(4,171,235)] text-xs font-semibold uppercase tracking-widest mb-6 backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-[rgb(4,171,235)] animate-pulse"></span> Next-Gen EV Traction Motors
+                </div>
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight mb-6 tracking-tight max-w-5xl mx-auto">
+                    Advancing Rare-Earth-Free Electric Motors for <span class="text-brand-gradient">India’s Clean Mobility Future</span>
+                </h1>
+                <p class="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                    Engineering ultra-efficient Switched Reluctance Motors (SRM) and intelligent power converters designed for peak performance, extreme thermal resilience, and zero reliance on imported rare-earth magnets.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 max-w-md mx-auto">
+                    <a href="#products" class="bg-[rgb(4,171,235)] text-black font-bold py-3.5 px-8 rounded-xl text-base hover:bg-cyan-400 transition-all duration-300 shadow-lg shadow-[rgba(4,171,235,0.3)] hover:scale-105">
+                        Explore Motors
+                    </a>
+                    <a href="#configurator" class="bg-gray-900/90 text-white border border-gray-700 font-semibold py-3.5 px-8 rounded-xl text-base hover:border-[rgb(4,171,235)] hover:text-[rgb(4,171,235)] transition-all duration-300 backdrop-blur-md">
+                        Motor Selector
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-gray-950 border-y border-gray-800/80 py-10 relative z-10">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="p-4 rounded-xl bg-gray-900/40 border border-gray-800">
+                        <div class="text-3xl md:text-4xl font-black text-[rgb(4,171,235)] mb-1">0%</div>
+                        <div class="text-xs md:text-sm text-gray-400 font-medium">Rare Earth Magnet Reliance</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-900/40 border border-gray-800">
+                        <div class="text-3xl md:text-4xl font-black text-white mb-1">96%+</div>
+                        <div class="text-xs md:text-sm text-gray-400 font-medium">Peak Converter Efficiency</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-900/40 border border-gray-800">
+                        <div class="text-3xl md:text-4xl font-black text-[rgb(4,171,235)] mb-1">100%</div>
+                        <div class="text-xs md:text-sm text-gray-400 font-medium">Indigenously Designed in India</div>
+                    </div>
+                    <div class="p-4 rounded-xl bg-gray-900/40 border border-gray-800">
+                        <div class="text-3xl md:text-4xl font-black text-white mb-1">IP67</div>
+                        <div class="text-xs md:text-sm text-gray-400 font-medium">Sealed Rugged Protection</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20 bg-black relative">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                    <div class="lg:w-1/2 relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-[rgb(4,171,235)] to-blue-600 rounded-2xl blur-lg opacity-25 group-hover:opacity-40 transition duration-1000"></div>
+                        <div class="relative bg-gray-900 rounded-2xl overflow-hidden border border-gray-800">
+                            <img src="Motor-1.png" alt="Infintin Mobility's rare-earth-free motor prototype" class="w-full h-auto object-cover transform group-hover:scale-105 transition duration-700" onerror="this.onerror=null;this.src='https://placehold.co/600x420/111827/04abeb?text=Switched+Reluctance+Motor';">
+                            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black via-black/80 to-transparent p-6">
+                                <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-wider">Engineering Blueprint</span>
+                                <h4 class="text-lg font-bold text-white">Next-Generation Traction Architecture</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:w-1/2 flex flex-col gap-6">
+                        <div>
+                            <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-widest">About Infintin - Pioneering Technology</span>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-1">Reimagining Electric Powertrains</h2>
+                        </div>
+                        
+                        <div class="bg-glass-card p-6 rounded-xl flex items-start gap-4">
+                            <div class="text-[rgb(4,171,235)] bg-[rgb(4,171,235)]/10 p-3 rounded-lg border border-[rgb(4,171,235)]/30 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1">Our Vision</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">
+                                    To enable sustainable mobility and industrial automation by delivering high-efficiency electric motors completely independent of rare-earth materials like Neodymium and Dysprosium.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-glass-card p-6 rounded-xl flex items-start gap-4">
+                            <div class="text-[rgb(4,171,235)] bg-[rgb(4,171,235)]/10 p-3 rounded-lg border border-[rgb(4,171,235)]/30 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1">Our Technical Approach</h3>
+                                <div class="text-gray-400 text-sm leading-relaxed mb-3">
+                                    <ul class="text-gray-300 text-xs space-y-2.5 leading-relaxed border-t border-gray-800/80 pt-3">
+                                        <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">•</span>To pioneer sustainable electric drive solutions by delivering high‑efficiency, rare‑earth‑free motors that reduce energy consumption and carbon emissions across mobility and industrial applications.</li>
+                                        <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">•</span>To empower industries and communities with resilient, affordable, and environmentally responsible motor technologies that eliminate rare‑earth dependency and accelerate the transition to clean electrification.</li>
+                                        <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">•</span>To advance innovation in electric drives by creating high‑performance, rare‑earth‑free motors that enable sustainable growth, strengthen supply chains, and contribute to global decarbonization.</li>
+                                    </ul>
+                                </div>                                
+                            </div>
+                        </div>
+
+                        <div class="bg-glass-card p-6 rounded-xl flex items-start gap-4">
+                            <div class="text-[rgb(4,171,235)] bg-[rgb(4,171,235)]/10 p-3 rounded-lg border border-[rgb(4,171,235)]/30 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1">National Atmanirbhar Commitment</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">
+                                    Establishing an end-to-end R&D and manufacturing hub in Tamil Nadu, aligned with "Make in India" initiatives to secure domestic EV supply chains.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compact Problem Section -->
+        <section id="problem" class="py-12 bg-gray-950 border-t border-gray-900 relative">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-8">
+                    <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-widest">Industry Challenges</span>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-1">The Problem</h2>
+                    <p class="text-gray-400 text-xs md:text-sm mt-2">Rapid electrification and climate mandates have exposed critical inefficiencies and rare-earth supply chain bottlenecks across industries.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Problem Card 1 -->
+                    <div class="bg-glass-card rounded-xl overflow-hidden flex flex-col justify-between group">
+                        <div class="relative overflow-hidden h-32 bg-gray-900 border-b border-gray-800">
+                            <img src="problem-hvac.png" alt="HVAC Energy Efficiency Problem" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='https://placehold.co/600x350/111827/04abeb?text=HVAC+%26+Induction+Motor+Losses';">
+                            <div class="absolute top-2 left-2 bg-red-500/20 text-red-400 border border-red-500/40 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                                Energy Waste
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <p class="text-gray-300 text-xs leading-relaxed font-medium">
+                                <span class="text-white font-bold">40% of all building energy</span> is consumed by HVAC systems — powered by induction motors that waste nearly a third of every unit of electricity through inefficiency.
+                            </p>
+                            <div class="mt-3 pt-2 border-t border-gray-800/80 text-[10px] text-gray-500 flex items-center justify-between">
+                                <span>Inefficient Induction Motors</span>
+                                <span class="text-red-400 font-semibold">~30% Power Wasted</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Problem Card 2 -->
+                    <div class="bg-glass-card rounded-xl overflow-hidden flex flex-col justify-between group">
+                        <div class="relative overflow-hidden h-32 bg-gray-900 border-b border-gray-800">
+                            <img src="problem-supply-chain.png" alt="PMSM Rare Earth Magnet Supply Chain Disruption" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='https://placehold.co/600x350/111827/ef4444?text=Rare+Earth+Supply+Disruption';">
+                            <div class="absolute top-2 left-2 bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                                Supply Bottleneck
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <p class="text-gray-300 text-xs leading-relaxed font-medium">
+                                High-efficiency PMSM motors depend on rare earth magnets. China's April 2025 export controls have disrupted India's supply chain.
+                            </p>
+                            <div class="mt-3 pt-2 border-t border-gray-800/80 text-[10px] text-gray-500 flex items-center justify-between">
+                                <span>Export Restrictions</span>
+                                <span class="text-amber-400 font-semibold">Critical Material Dependency</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Problem Card 3 -->
+                    <div class="bg-glass-card rounded-xl overflow-hidden flex flex-col justify-between group">
+                        <div class="relative overflow-hidden h-32 bg-gray-900 border-b border-gray-800">
+                            <img src="problem-compliance.png" alt="Non-compliant Motor Market Lockout" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='https://placehold.co/600x350/111827/f59e0b?text=Market+Lockout+%26+Compliance';">
+                            <div class="absolute top-2 left-2 bg-red-500/20 text-red-400 border border-red-500/40 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                                Regulatory Risk
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <p class="text-gray-300 text-xs leading-relaxed font-medium">
+                                Non-compliant motors will be locked out of the market as stricter efficiency standards and import norms are enforced.
+                            </p>
+                            <div class="mt-3 pt-2 border-t border-gray-800/80 text-[10px] text-gray-500 flex items-center justify-between">
+                                <span>Strict Efficiency Norms</span>
+                                <span class="text-red-400 font-semibold">Loss of Market Access</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Problem Card 4 -->
+                    <div class="bg-glass-card rounded-xl overflow-hidden flex flex-col justify-between group">
+                        <div class="relative overflow-hidden h-32 bg-gray-900 border-b border-gray-800">
+                            <img src="problem-commercial-risk.png" alt="OEM Commercial and ESG Mandate Risks" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null;this.src='https://placehold.co/600x350/111827/04abeb?text=OEM+Commercial+%26+ESG+Risk';">
+                            <div class="absolute top-2 left-2 bg-cyan-500/20 text-[rgb(4,171,235)] border border-[rgb(4,171,235)]/40 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+                                Urgent OEM Challenge
+                            </div>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between">
+                            <p class="text-gray-300 text-xs leading-relaxed font-medium">
+                                For HVAC OEMs and industrial motor manufacturers, rising energy costs and ESG mandates are turning this into an urgent commercial risk.
+                            </p>
+                            <div class="mt-3 pt-2 border-t border-gray-800/80 text-[10px] text-gray-500 flex items-center justify-between">
+                                <span>ESG Mandates</span>
+                                <span class="text-[rgb(4,171,235)] font-semibold">Rising Operational Costs</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="py-20 bg-gray-950 border-t border-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-widest">Motor Portfolio</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-1">Engineered Solutions</h2>
+                    <p class="text-gray-400 text-sm mt-3">Explore our high-efficiency Switched Reluctance Motors and custom-matched power electronic controllers.</p>
+                </div>
+
+                <div class="relative">
+                    <div class="slider-container rounded-2xl">
+                        <div id="slider-track" class="slider-track">
+                            <!-- Product 3 -->
+                            <div class="product-card p-3">
+                                <div class="bg-glass-card rounded-2xl p-6 h-full flex flex-col justify-between">
+                                    <div>
+                                        <div class="relative overflow-hidden rounded-xl mb-5 bg-gray-900/80 border border-gray-800">
+                                            <img src="MotorV1.png" alt="1kW SRM Motor" class="w-full h-48 object-contain p-4" onerror="this.onerror=null;this.src='https://placehold.co/400x260/0a0a0a/04abeb?text=1kW+SRM';">
+                                        </div>
+                                        <h3 class="text-xl font-bold text-white mb-1">FCU Motor</h3>
+                                        <p class="text-xs text-[rgb(4,171,235)] font-medium mb-4">50 W to 120 W</p>
+                                        <ul class="text-gray-300 text-xs space-y-2.5 mb-6">
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Rare earth free BLDC</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> 2 to 3 years ROI</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Upto 60% energy saving</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Retrofit with FCUs</li>
+                                        </ul>
+                                    </div>
+                                    <a href="#contact" class="w-full text-center bg-gray-800 hover:bg-[rgb(4,171,235)] hover:text-black text-gray-200 text-xs font-bold py-2.5 rounded-lg transition-all">
+                                        Request Specifications
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 4 -->
+                            <div class="product-card p-3">
+                                <div class="bg-glass-card rounded-2xl p-6 h-full flex flex-col justify-between">
+                                    <div>
+                                        <div class="relative overflow-hidden rounded-xl mb-5 bg-gray-900/80 border border-gray-800">
+                                            <img src="MotorV2.jpg" alt="AHU Motor" class="w-full h-48 object-contain p-4" onerror="this.onerror=null;this.src='https://placehold.co/400x260/0a0a0a/04abeb?text=4kW+SRM';">
+                                        </div>
+                                        <h3 class="text-xl font-bold text-white mb-1">AHU Motor</h3>
+                                        <p class="text-xs text-[rgb(4,171,235)] font-medium mb-4"></p>
+                                        <ul class="text-gray-300 text-xs space-y-2.5 mb-6">
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Rare earth free Reluctance motor</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> 2 to 3 years ROI</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Upto 30% energy saving</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Standard frame size</li>
+                                        </ul>
+                                    </div>
+                                    <a href="#contact" class="w-full text-center bg-gray-800 hover:bg-[rgb(4,171,235)] hover:text-black text-gray-200 text-xs font-bold py-2.5 rounded-lg transition-all">
+                                        Request Specifications
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- Product 1 -->
+                            <div class="product-card p-3">
+                                <div class="bg-glass-card rounded-2xl p-6 h-full flex flex-col justify-between">
+                                    <div>
+                                        <div class="relative overflow-hidden rounded-xl mb-5 bg-gray-900/80 border border-gray-800">
+                                            <img src="prod-1.png" alt="Switched Reluctance Motor" class="w-full h-48 object-contain p-4" onerror="this.onerror=null;this.src='https://placehold.co/400x260/0a0a0a/04abeb?text=SRM+Platform';">
+                                            <span class="absolute top-3 right-3 bg-[rgb(4,171,235)] text-black text-[10px] font-black px-2.5 py-1 rounded-full uppercase">Flagship</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-white mb-1">SRM Traction Platform</h3>
+                                        <p class="text-xs text-[rgb(4,171,235)] font-medium mb-4">Scalable 1kW to 60kW Configurations</p>
+                                        <ul class="text-gray-300 text-xs space-y-2.5 mb-6">
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Maintenance-free robust solid rotor</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> High torque-to-inertia ratio for fast response</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Integrated plug-and-play controller interface</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Zero risk of demagnetization under thermal stress</li>
+                                        </ul>
+                                    </div>
+                                    <a href="#contact" class="w-full text-center bg-gray-800 hover:bg-[rgb(4,171,235)] hover:text-black text-gray-200 text-xs font-bold py-2.5 rounded-lg transition-all">
+                                        Request Specifications
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Product 2 -->
+                            <div class="product-card p-3">
+                                <div class="bg-glass-card rounded-2xl p-6 h-full flex flex-col justify-between">
+                                    <div>
+                                        <div class="relative overflow-hidden rounded-xl mb-5 bg-gray-900/80 border border-gray-800">
+                                            <img src="prod-2.png" alt="Intelligent Power Converter" class="w-full h-48 object-contain p-4" onerror="this.onerror=null;this.src='https://placehold.co/400x260/0a0a0a/04abeb?text=Power+Converter';">
+                                            <span class="absolute top-3 right-3 bg-emerald-400 text-black text-[10px] font-black px-2.5 py-1 rounded-full uppercase">Digital ECU</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-white mb-1">Intelligent Power Converter</h3>
+                                        <p class="text-xs text-[rgb(4,171,235)] font-medium mb-4">Proprietary Control Electronics</p>
+                                        <ul class="text-gray-300 text-xs space-y-2.5 mb-6">
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Advanced position-sensorless algorithms</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Rapid torque response, soft-start & regenerative braking</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> CAN 2.0B automotive telemetry compliance</li>
+                                            <li class="flex items-start"><span class="text-[rgb(4,171,235)] font-bold mr-2">✓</span> Designed and built in Tamil Nadu, India</li>
+                                        </ul>
+                                    </div>
+                                    <a href="#contact" class="w-full text-center bg-gray-800 hover:bg-[rgb(4,171,235)] hover:text-black text-gray-200 text-xs font-bold py-2.5 rounded-lg transition-all">
+                                        Request Specifications
+                                    </a>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+
+                    <!-- Slider Nav Buttons -->
+                    <button id="prev-button" aria-label="Previous Slide" class="absolute top-1/2 -left-4 -translate-y-1/2 bg-gray-900/90 border border-gray-700 hover:border-[rgb(4,171,235)] p-3 rounded-full text-white shadow-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed z-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <button id="next-button" aria-label="Next Slide" class="absolute top-1/2 -right-4 -translate-y-1/2 bg-gray-900/90 border border-gray-700 hover:border-[rgb(4,171,235)] p-3 rounded-full text-white shadow-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed z-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="configurator" class="py-20 bg-black border-t border-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-widest">Interactive Calculator</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-1">Motor Recommendation Engine</h2>
+                    <p class="text-gray-400 text-sm mt-2">Select your vehicle application and operating parameters to find the optimal Infintin motor specification.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto bg-glass-card rounded-2xl p-6 md:p-10 border border-gray-800">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <!-- Inputs -->
+                        <div class="space-y-6">
+                            <div>
+                                <label for="config-app" class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Vehicle / Application</label>
+                                <select id="config-app" class="w-full bg-gray-900 text-white p-3 rounded-xl border border-gray-700 focus:outline-none focus:border-[rgb(4,171,235)] text-sm">
+                                    <option value="bike">Electric 2-Wheeler (Scooter/Bike)</option>
+                                    <option value="rickshaw">Electric 3-Wheeler (Passenger Auto)</option>
+                                    <option value="cargo">Electric Cargo / Loader Trike</option>
+                                    <option value="pump">Solar Water Pump / Industrial Fan</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label for="config-voltage" class="text-xs font-bold text-gray-300 uppercase tracking-wider">System Bus Voltage</label>
+                                    <span id="voltage-val" class="text-sm font-bold text-[rgb(4,171,235)]">48 V</span>
+                                </div>
+                                <input type="range" id="config-voltage" min="24" max="96" step="24" value="48" class="w-full accent-[rgb(4,171,235)] bg-gray-800 rounded-lg cursor-pointer h-2">
+                                <div class="flex justify-between text-[10px] text-gray-500 mt-1">
+                                    <span>24V</span>
+                                    <span>48V</span>
+                                    <span>72V</span>
+                                    <span>96V</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label for="config-power" class="text-xs font-bold text-gray-300 uppercase tracking-wider">Required Target Power</label>
+                                    <span id="power-val" class="text-sm font-bold text-[rgb(4,171,235)]">4.0 kW</span>
+                                </div>
+                                <input type="range" id="config-power" min="1" max="20" step="0.5" value="4" class="w-full accent-[rgb(4,171,235)] bg-gray-800 rounded-lg cursor-pointer h-2">
+                                <div class="flex justify-between text-[10px] text-gray-500 mt-1">
+                                    <span>1 kW</span>
+                                    <span>5 kW</span>
+                                    <span>10 kW</span>
+                                    <span>20 kW</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Result Display Box -->
+                        <div class="bg-gray-950 p-6 rounded-2xl border border-[rgb(4,171,235)]/30 flex flex-col justify-between h-full">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider bg-[rgb(4,171,235)]/20 text-[rgb(4,171,235)] px-2.5 py-1 rounded-full">Recommended Motor</span>
+                                    <span class="text-xs text-gray-400">SRM Architecture</span>
+                                </div>
+                                <h3 id="rec-title" class="text-2xl font-extrabold text-white mb-2">Infintin SRM-4.0kW</h3>
+                                <p id="rec-desc" class="text-xs text-gray-400 mb-6 leading-relaxed">
+                                    High-torque rare-earth-free powertrain optimized for urban commuter 2-wheelers and passenger rickshaws.
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4 border-t border-gray-800 pt-4">
+                                <div>
+                                    <span class="text-[10px] text-gray-500 uppercase block">Est. Peak Torque</span>
+                                    <span id="rec-torque" class="text-lg font-black text-white">28 N·m</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-gray-500 uppercase block">Rated Efficiency</span>
+                                    <span id="rec-eff" class="text-lg font-black text-[rgb(4,171,235)]">93.5%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section with 4 Cards -->
+        <section id="technology" class="py-20 bg-gray-950 border-t border-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-widest">Engineering Supremacy</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-1">Our Technological Edge</h2>
+                    <p class="text-gray-400 text-sm mt-2">Solving the critical vulnerabilities of permanent magnet motors with next-gen reluctance physics.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1: Rare-Earth Free -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-5">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Rare-Earth Free</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Eliminates reliance on volatile rare-earth element markets and imports.</p>
+                    </div>
+
+                    <!-- Card 2: Fault Tolerant Drive -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-5">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Fault Tolerant Drive</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Ensures continuous operational safety through independent phase isolation and fail-safe redundancy.</p>
+                    </div>
+
+                    <!-- Card 3: Interoperability with VFDs -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-5">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">Interoperability with VFDs</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Seamlessly integrates with standard Variable Frequency Drives for versatile speed and torque control.</p>
+                    </div>
+
+                    <!-- Card 4: IoT Capability -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-5">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path></svg>
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-2">IoT Capability</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">Enables real-time remote telemetry, cloud analytics, and predictive maintenance monitoring.</p>
+                    </div>
+                </div>
+
+                <div class="mt-16 bg-glass-card rounded-2xl p-6 overflow-x-auto">
+                    <h3 class="text-lg font-bold text-white mb-4">Technology Comparison Matrix</h3>
+                    <table class="w-full text-left text-xs text-gray-300 min-w-[600px]">
+                        <thead class="bg-gray-900 text-gray-400 uppercase tracking-wider border-b border-gray-800">
+                            <tr>
+                                <th class="p-3">Feature</th>
+                                <th class="p-3 text-[rgb(4,171,235)] font-bold">Infintin SRM</th>
+                                <th class="p-3">PM BLDC Motors</th>
+                                <th class="p-3">Induction Motors</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800/60">
+                            <tr>
+                                <td class="p-3 font-semibold text-white">Rare-Earth Magnets</td>
+                                <td class="p-3 text-emerald-400 font-bold">None (0%)</td>
+                                <td class="p-3 text-red-400">Heavy (NdFeB)</td>
+                                <td class="p-3 text-emerald-400">None (0%)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-white">Rotor Loss & Heat</td>
+                                <td class="p-3 text-emerald-400 font-bold">Extremely Low</td>
+                                <td class="p-3 text-yellow-400">Moderate</td>
+                                <td class="p-3 text-red-400">High (Copper Rotor Loss)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-white">Manufacturing Cost</td>
+                                <td class="p-3 text-emerald-400 font-bold">Low & Stable</td>
+                                <td class="p-3 text-red-400">High & Volatile</td>
+                                <td class="p-3 text-emerald-400">Moderate</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-semibold text-white">Fault Tolerance</td>
+                                <td class="p-3 text-emerald-400 font-bold">Independent Phase Isolation</td>
+                                <td class="p-3 text-red-400">Short Circuit Risk</td>
+                                <td class="p-3 text-yellow-400">Standard</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="py-20 bg-black">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-widest">Leadership & Vision</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-1">Meet Our Founders</h2>
+                    <p class="text-gray-400 text-sm mt-2">Pioneering electric motor designers and embedded system specialists.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+                    <!-- Founder 1 -->
+                    <div class="team-card bg-glass-card rounded-2xl">
+                        <div class="p-6 flex flex-col justify-center items-center h-full">
+                            <img src="founder1.png" alt="M. Augustine M.E., Ph.D." class="w-28 h-28 rounded-full mb-4 border-2 border-[rgb(4,171,235)] object-cover shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/128x128/111827/04abeb?text=Dr.+Augustine';">
+                            <h3 class="text-xl font-bold text-white text-center">M. Augustine M.E., Ph.D.</h3>
+                            <p class="text-xs font-semibold text-[rgb(4,171,235)] mt-1">Founder - Machine Design</p>
+                        </div>
+                        <div class="team-card-content">
+                            <h4 class="font-bold text-white mb-2">Machine Design Specialist</h4>
+                            <p class="text-xs leading-relaxed text-gray-200">
+                                Specialized expertise in electromagnetic FEA simulation, structural motor mechanics, thermal modeling, and physical prototype testing of Switched Reluctance Motors.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Founder 2 -->
+                    <div class="team-card bg-glass-card rounded-2xl">
+                        <div class="p-6 flex flex-col justify-center items-center h-full">
+                            <img src="founder2.png" alt="A. Infantraj M.Tech." class="w-28 h-28 rounded-full mb-4 border-2 border-[rgb(4,171,235)] object-cover shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/128x128/111827/04abeb?text=A.+Infantraj';">
+                            <h3 class="text-xl font-bold text-white text-center">A. Infantraj M.Tech.</h3>
+                            <p class="text-xs font-semibold text-[rgb(4,171,235)] mt-1">Founder - Embedded Systems</p>
+                        </div>
+                        <div class="team-card-content">
+                            <h4 class="font-bold text-white mb-2">Embedded Software Architect</h4>
+                            <p class="text-xs leading-relaxed text-gray-200">
+                                Expert in PM BLDC & SRM control algorithms, machine learning applications for motor health monitoring, DSP firmware design, and power inverter hardware.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Founder 3 -->
+                    <div class="team-card bg-glass-card rounded-2xl">
+                        <div class="p-6 flex flex-col justify-center items-center h-full">
+                            <img src="founder3.png" alt="P. Chandrasekhar M.E." class="w-28 h-28 rounded-full mb-4 border-2 border-[rgb(4,171,235)] object-cover shadow-lg" onerror="this.onerror=null;this.src='https://placehold.co/128x128/111827/04abeb?text=P.+Chandrasekhar';">
+                            <h3 class="text-xl font-bold text-white text-center">P. Chandrasekhar M.E.</h3>
+                            <p class="text-xs font-semibold text-[rgb(4,171,235)] mt-1">Founder - Manufacturing & Ops</p>
+                        </div>
+                        <div class="team-card-content">
+                            <h4 class="font-bold text-white mb-2">Manufacturing Operations</h4>
+                            <p class="text-xs leading-relaxed text-gray-200">
+                                Deep background in mechanical components fabrication, mechatronics integration, industrial tooling, thermal analysis, and project management execution.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advisory Board -->
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h3 class="text-2xl font-bold text-white">Advisory Board & Strategic Consultants</h3>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="team-card bg-glass-card rounded-2xl">
+                        <div class="p-6 flex flex-col justify-center items-center h-full">
+                            <img src="advisor1.png" alt="Mr. Karthik Anbalagan" class="w-24 h-24 rounded-full mb-4 border-2 border-[rgb(4,171,235)] object-cover" onerror="this.onerror=null;this.src='https://placehold.co/128x128/111827/04abeb?text=K.+Anbalagan';">
+                            <h3 class="text-lg font-bold text-white text-center">Mr. Karthik Anbalagan</h3>
+                            <p class="text-xs text-[rgb(4,171,235)] mt-1">Consultant - Brand & Go-To-Market</p>
+                        </div>
+                        <div class="team-card-content">
+                            <p class="text-xs text-gray-200">Seasoned marketing strategist with over 20 years scaling clean-tech product brands and commercial sales positioning.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card bg-glass-card rounded-2xl">
+                        <div class="p-6 flex flex-col justify-center items-center h-full">
+                            <img src="advisor2.png" alt="M. Senthilkumaran M.E., Ph.D." class="w-24 h-24 rounded-full mb-4 border-2 border-[rgb(4,171,235)] object-cover" onerror="this.onerror=null;this.src='https://placehold.co/128x128/111827/04abeb?text=Dr.+Senthilkumaran';">
+                            <h3 class="text-lg font-bold text-white text-center">M. Senthilkumaran Ph.D.</h3>
+                            <p class="text-xs text-[rgb(4,171,235)] mt-1">Consultant - Controls & Feedback</p>
+                        </div>
+                        <div class="team-card-content">
+                            <p class="text-xs text-gray-200">Expert in closed-loop control dynamics, feedback robotics systems, and adaptive power inverter feedback loops.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card bg-glass-card rounded-2xl">
+                        <div class="p-6 flex flex-col justify-center items-center h-full">
+                            <img src="advisor3.png" alt="Wg. Cdr. Edward Jeyaseelan Kennedy" class="w-24 h-24 rounded-full mb-4 border-2 border-[rgb(4,171,235)] object-cover" onerror="this.onerror=null;this.src='https://placehold.co/128x128/111827/04abeb?text=Wg.+Cdr.+Kennedy';">
+                            <h3 class="text-lg font-bold text-white text-center">Wg. Cdr. E. J. Kennedy (Retd)</h3>
+                            <p class="text-xs text-[rgb(4,171,235)] mt-1">Consultant - Production & Quality</p>
+                        </div>
+                        <div class="team-card-content">
+                            <p class="text-xs text-gray-200">23 years of service in the Indian Air Force in high-precision aviation maintenance, quality assurance, and plant administration.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Backed By -->
+        <section id="backed-by" class="py-20 bg-gray-950 border-t border-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-widest">Ecosystem & Partnerships</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-1">Backed By</h2>
+                    <p class="text-gray-400 text-sm mt-2">Supported and recognized by premier incubation hubs, government organizations, and startup ecosystems.</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 max-w-6xl mx-auto">
+                    <!-- Partner 1 -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center border border-gray-800 hover:border-[rgb(4,171,235)]/50 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-4 font-black text-lg shadow-inner">
+                            AIC
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">AIC - Anna Incubator</h3>
+                        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Incubation Partner</span>
+                    </div>
+
+                    <!-- Partner 2 -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center border border-gray-800 hover:border-[rgb(4,171,235)]/50 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-4 font-black text-lg shadow-inner">
+                            ITEL
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">ITEL Foundations</h3>
+                        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Strategic Supporter</span>
+                    </div>
+
+                    <!-- Partner 3 -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center border border-gray-800 hover:border-[rgb(4,171,235)]/50 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-4 font-black text-lg shadow-inner">
+                            TN
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">Startup TN</h3>
+                        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">State Ecosystem</span>
+                    </div>
+
+                    <!-- Partner 4 -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center border border-gray-800 hover:border-[rgb(4,171,235)]/50 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-4 font-black text-lg shadow-inner">
+                            MSME
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">MSME</h3>
+                        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Govt. Scheme Grant</span>
+                    </div>
+
+                    <!-- Partner 5 -->
+                    <div class="bg-glass-card p-6 rounded-2xl flex flex-col items-center justify-center text-center border border-gray-800 hover:border-[rgb(4,171,235)]/50 transition-all duration-300">
+                        <div class="w-14 h-14 rounded-2xl bg-[rgb(4,171,235)]/10 border border-[rgb(4,171,235)]/30 flex items-center justify-center text-[rgb(4,171,235)] mb-4 font-black text-lg shadow-inner">
+                            EDII
+                        </div>
+                        <h3 class="text-base font-bold text-white mb-1">EDII TN</h3>
+                        <span class="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Entrepreneurship Inst.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-20 bg-gray-950 border-t border-gray-900">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-12">
+                        <span class="text-xs font-bold text-[rgb(4,171,235)] uppercase tracking-widest">Connect With Us</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-white mt-1">Let's Build the Future Together</h2>
+                        <p class="text-gray-400 text-sm mt-2">Interested in Pilots, Joint Development and New Product Developments?</p>
+                    </div>
+
+                    <div class="bg-glass-card rounded-2xl p-8 md:p-10 border border-gray-800">
+                        <form id="contact-form" action="https://formspree.io/f/xnnbazyw" method="POST" novalidate>
+                            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label for="name" class="block text-xs font-bold text-gray-300 uppercase mb-2">Full Name *</label>
+                                    <input type="text" name="name" id="name" placeholder="John Doe" class="w-full bg-gray-900 text-white p-3.5 rounded-xl border border-gray-700 focus:outline-none focus:border-[rgb(4,171,235)] text-sm">
+                                    <p id="name-error" class="error-message"></p>
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-xs font-bold text-gray-300 uppercase mb-2">Business Email *</label>
+                                    <input type="email" name="email" id="email" placeholder="john@company.com" class="w-full bg-gray-900 text-white p-3.5 rounded-xl border border-gray-700 focus:outline-none focus:border-[rgb(4,171,235)] text-sm">
+                                    <p id="email-error" class="error-message"></p>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="message" class="block text-xs font-bold text-gray-300 uppercase mb-2">Project Details / Inquiry *</label>
+                                <textarea id="message" name="message" placeholder="Specify required motor power rating, target voltage, annual volume..." rows="5" class="w-full bg-gray-900 text-white p-3.5 rounded-xl border border-gray-700 focus:outline-none focus:border-[rgb(4,171,235)] text-sm"></textarea>
+                                <p id="message-error" class="error-message"></p>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" id="submit-btn" class="w-full sm:w-auto bg-[rgb(4,171,235)] text-black font-bold py-3.5 px-10 rounded-xl text-base hover:bg-cyan-400 transition-all shadow-lg shadow-[rgba(4,171,235,0.3)]">
+                                    Send Technical Inquiry
+                                </button>
+                            </div>
+                        </form>
+
+                        <div id="thank-you-message" class="hidden text-center py-8">
+                            <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/40">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Inquiry Received!</h3>
+                            <p class="text-gray-400 text-sm max-w-md mx-auto">Thank you for reaching out. Our engineering team will review your specifications and contact you shortly.</p>
+                        </div>
+                    </div>
+
+                    <!-- Contact Details -->
+                    <div class="grid md:grid-cols-3 gap-6 mt-12 text-center text-xs text-gray-400">
+                        <div class="p-4 bg-gray-900/40 rounded-xl border border-gray-800">
+                            <span class="block font-bold text-white text-sm mb-1">Email Us</span>
+                            <a href="mailto:admin@infintin.in" class="text-[rgb(4,171,235)] hover:underline">admin@infintin.in</a>
+                        </div>
+                        <div class="p-4 bg-gray-900/40 rounded-xl border border-gray-800">
+                            <span class="block font-bold text-white text-sm mb-1">Call Technical Support</span>
+                            <a href="tel:+919790395731" class="text-[rgb(4,171,235)] hover:underline">+91-9790395731</a>
+                        </div>
+                        <div class="p-4 bg-gray-900/40 rounded-xl border border-gray-800">
+                            <span class="block font-bold text-white text-sm mb-1">Headquarters</span>
+                            <span>No.10, Lakshmi Nagar, Guduvanchery - 603202, Tamil Nadu, India</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black border-t border-gray-900 py-10">
+        <div class="container mx-auto px-6 text-center text-xs text-gray-500">
+            <p>&copy; 2026 Infintin Mobility Solutions Pvt Ltd. All Rights Reserved.</p>
+            <p class="mt-2 text-gray-600">Pioneering Rare-Earth-Free Electric Motor Technology for Sustainable Global Clean Mobility.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Drawer Logic
+            const mobileMenuBtn = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const iconOpen = document.getElementById('menu-icon-open');
+            const iconClose = document.getElementById('menu-icon-close');
+
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    const isHidden = mobileMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        mobileMenu.classList.remove('hidden');
+                        iconOpen.classList.add('hidden');
+                        iconClose.classList.remove('hidden');
+                    } else {
+                        mobileMenu.classList.add('hidden');
+                        iconOpen.classList.remove('hidden');
+                        iconClose.classList.add('hidden');
+                    }
+                });
+            }
+
+            const mobileLinks = document.querySelectorAll('#mobile-menu a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    iconOpen.classList.remove('hidden');
+                    iconClose.classList.add('hidden');
+                });
+            });
+
+            const track = document.getElementById('slider-track');
+            const prevBtn = document.getElementById('prev-button');
+            const nextBtn = document.getElementById('next-button');
+            const items = track ? track.querySelectorAll('.product-card') : [];
+            let index = 0;
+
+            function updateSlider() {
+                if (!track || items.length === 0) return;
+                const itemWidth = items[0].offsetWidth;
+                track.style.transform = `translateX(-${index * itemWidth}px)`;
+                if (prevBtn) prevBtn.disabled = index === 0;
+                
+                const itemsInView = Math.round(track.parentElement.offsetWidth / itemWidth) || 1;
+                if (nextBtn) nextBtn.disabled = index >= items.length - itemsInView;
+            }
+
+            if (nextBtn && prevBtn) {
+                nextBtn.addEventListener('click', () => {
+                    const itemsInView = Math.round(track.parentElement.offsetWidth / items[0].offsetWidth) || 1;
+                    if (index < items.length - itemsInView) {
+                        index++;
+                        updateSlider();
+                    }
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    if (index > 0) {
+                        index--;
+                        updateSlider();
+                    }
+                });
+
+                window.addEventListener('resize', updateSlider);
+                updateSlider();
+            }
+
+            const appSelect = document.getElementById('config-app');
+            const voltSlider = document.getElementById('config-voltage');
+            const powerSlider = document.getElementById('config-power');
+
+            const voltVal = document.getElementById('voltage-val');
+            const powerVal = document.getElementById('power-val');
+
+            const recTitle = document.getElementById('rec-title');
+            const recDesc = document.getElementById('rec-desc');
+            const recTorque = document.getElementById('rec-torque');
+            const recEff = document.getElementById('rec-eff');
+
+            function calculateMotorRec() {
+                if (!voltSlider || !powerSlider) return;
+                const v = parseInt(voltSlider.value, 10);
+                const p = parseFloat(powerSlider.value);
+
+                voltVal.textContent = `${v} V`;
+                powerVal.textContent = `${p.toFixed(1)} kW`;
+
+                let estimatedRPM = 3000;
+                if (p > 10) estimatedRPM = 8000;
+                else if (p > 3) estimatedRPM = 6000;
+
+                const estTorque = Math.round((p * 1000 * 9.5488) / estimatedRPM);
+                const estEff = Math.min(95.5, (91 + (p * 0.25))).toFixed(1);
+
+                recTorque.textContent = `${estTorque} N·m`;
+                recEff.textContent = `${estEff}%`;
+
+                if (p <= 2) {
+                    recTitle.textContent = `Infintin SRM-1.0kW (${v}V)`;
+                    recDesc.textContent = "Lightweight compact motor platform ideal for e-bikes, light cargo, and solar water pumps.";
+                } else if (p <= 8) {
+                    recTitle.textContent = `Infintin SRM-4.0kW (${v}V)`;
+                    recDesc.textContent = "High-torque traction motor suited for urban e-2Wheelers and high-frequency passenger auto rickshaws.";
+                } else {
+                    recTitle.textContent = `Infintin SRM-15.0kW (${v}V)`;
+                    recDesc.textContent = "Heavy-duty commercial motor engineered for high load cargo trikes, industrial automated vehicles, and light commercial trucks.";
+                }
+            }
+
+            if (voltSlider && powerSlider) {
+                voltSlider.addEventListener('input', calculateMotorRec);
+                powerSlider.addEventListener('input', calculateMotorRec);
+                appSelect.addEventListener('change', calculateMotorRec);
+                calculateMotorRec();
+            }
+
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('name');
+                    const email = document.getElementById('email');
+                    const message = document.getElementById('message');
+                    
+                    const nameError = document.getElementById('name-error');
+                    const emailError = document.getElementById('email-error');
+                    const messageError = document.getElementById('message-error');
+
+                    let isValid = true;
+
+                    if (!name.value.trim()) {
+                        nameError.textContent = 'Name is required.';
+                        isValid = false;
+                    } else {
+                        nameError.textContent = '';
+                    }
+
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!email.value.trim()) {
+                        emailError.textContent = 'Email is required.';
+                        isValid = false;
+                    } else if (!emailRegex.test(email.value)) {
+                        emailError.textContent = 'Please enter a valid email address.';
+                        isValid = false;
+                    } else {
+                        emailError.textContent = '';
+                    }
+
+                    if (!message.value.trim()) {
+                        messageError.textContent = 'Message details are required.';
+                        isValid = false;
+                    } else {
+                        messageError.textContent = '';
+                    }
+
+                    if (isValid) {
+                        const submitBtn = document.getElementById('submit-btn');
+                        submitBtn.disabled = true;
+                        submitBtn.textContent = 'Sending Inquiry...';
+
+                        try {
+                            const formData = new FormData(contactForm);
+                            const response = await fetch(contactForm.action, {
+                                method: 'POST',
+                                body: formData,
+                                headers: { 'Accept': 'application/json' }
+                            });
+
+                            if (response.ok) {
+                                contactForm.classList.add('hidden');
+                                document.getElementById('thank-you-message').classList.remove('hidden');
+                            } else {
+                                submitBtn.disabled = false;
+                                submitBtn.textContent = 'Send Technical Inquiry';
+                                alert('Inquiry submission failed. Please try again or email admin@infintin.in');
+                            }
+                        } catch (err) {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Send Technical Inquiry';
+                            alert('Network error occurred. Please check your connection.');
+                        }
+                    }
+                });
+            }
+        });
+
+        // --- 3D Floating Icon & Viewer Logic ---
+        let scene, camera, renderer, motorGroup, rotor, statorHalf1, statorHalf2, windingsGroup;
+        let isExploded = false;
+        let autoRotate = true;
+        let isDragging = false;
+        let isWidgetExpanded = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        const clock = new THREE.Clock();
+
+        function init3D() {
+            const canvas = document.getElementById('hero-canvas');
+            const container = document.getElementById('canvas-container');
+            if (!canvas || !container) return;
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.set(0, 0, 9);
+
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(container.clientWidth, container.clientHeight, false);
+
+            // Lighting setup
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            const dirLight1 = new THREE.DirectionalLight(0x04abeb, 1.2);
+            dirLight1.position.set(-10, 10, 10);
+            scene.add(dirLight1);
+
+            const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+            dirLight2.position.set(10, -5, 5);
+            scene.add(dirLight2);
+
+            // Motor Assembly Container
+            motorGroup = new THREE.Group();
+            scene.add(motorGroup);
+
+            // Materials
+            const casingMaterial = new THREE.MeshStandardMaterial({ color: 0x22262e, metalness: 0.85, roughness: 0.25 });
+            const copperMaterial = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.9, roughness: 0.3 });
+            const steelRotorMaterial = new THREE.MeshStandardMaterial({ color: 0x9ca3af, metalness: 0.95, roughness: 0.2 });
+            const shaftMaterial = new THREE.MeshStandardMaterial({ color: 0xe5e7eb, metalness: 0.9, roughness: 0.1 });
+
+            // Stator Halves
+            statorHalf1 = createStatorHalf(casingMaterial, 0);
+            statorHalf2 = createStatorHalf(casingMaterial, Math.PI);
+            motorGroup.add(statorHalf1, statorHalf2);
+
+            // Copper Windings
+            windingsGroup = new THREE.Group();
+            const windingGeo = new THREE.TorusGeometry(2.1, 0.22, 16, 80);
+            for (let i = 0; i < 12; i++) {
+                const winding = new THREE.Mesh(windingGeo, copperMaterial);
+                const angle = (i / 12) * Math.PI * 2;
+                winding.rotation.x = Math.PI / 2;
+                winding.rotation.z = angle + Math.PI / 12;
+                windingsGroup.add(winding);
+            }
+            motorGroup.add(windingsGroup);
+
+            // Rotor & Shaft Assembly
+            rotor = new THREE.Group();
+            
+            // Central Shaft
+            const shaftGeo = new THREE.CylinderGeometry(0.35, 0.35, 6.5, 32);
+            const shaftMesh = new THREE.Mesh(shaftGeo, shaftMaterial);
+            shaftMesh.rotation.x = Math.PI / 2;
+            rotor.add(shaftMesh);
+
+            // Salient Rotor Teeth
+            const rotorCoreGeo = new THREE.CylinderGeometry(1.25, 1.25, 4.2, 32);
+            const rotorCore = new THREE.Mesh(rotorCoreGeo, steelRotorMaterial);
+            rotorCore.rotation.x = Math.PI / 2;
+            rotor.add(rotorCore);
+
+            // Reluctance Poles
+            const toothGeo = new THREE.BoxGeometry(0.35, 4.2, 0.5);
+            for (let i = 0; i < 8; i++) {
+                const tooth = new THREE.Mesh(toothGeo, steelRotorMaterial);
+                const angle = (i / 8) * Math.PI * 2;
+                tooth.position.x = Math.cos(angle) * 1.35;
+                tooth.position.z = Math.sin(angle) * 1.35;
+                tooth.rotation.y = -angle;
+                rotor.add(tooth);
+            }
+
+            motorGroup.add(rotor);
+            motorGroup.rotation.x = 0.4;
+            motorGroup.rotation.y = -0.5;
+
+            // Touch & Drag Controls
+            canvas.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const deltaX = e.clientX - previousMousePosition.x;
+                const deltaY = e.clientY - previousMousePosition.y;
+
+                motorGroup.rotation.y += deltaX * 0.008;
+                motorGroup.rotation.x += deltaY * 0.008;
+
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+
+            window.addEventListener('mouseup', () => { isDragging = false; });
+
+            canvas.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isDragging = true;
+                    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+            });
+
+            canvas.addEventListener('touchmove', (e) => {
+                if (!isDragging || e.touches.length !== 1) return;
+                const deltaX = e.touches[0].clientX - previousMousePosition.x;
+                const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+                motorGroup.rotation.y += deltaX * 0.008;
+                motorGroup.rotation.x += deltaY * 0.008;
+
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            });
+
+            window.addEventListener('touchend', () => { isDragging = false; });
+
+            // UI Interaction for Expand / Shrink
+            setupWidgetInteraction();
+
+            window.addEventListener('resize', onWindowResize, false);
+            animate3D();
+        }
+
+        function createStatorHalf(material, thetaStart) {
+            const group = new THREE.Group();
+            const halfCoreGeo = new THREE.CylinderGeometry(2.7, 2.7, 4.2, 32, 1, false, thetaStart, Math.PI);
+            const halfCore = new THREE.Mesh(halfCoreGeo, material);
+            halfCore.rotation.x = Math.PI / 2;
+            group.add(halfCore);
+
+            const finGeo = new THREE.BoxGeometry(0.12, 4.2, 0.45);
+            const finCount = 10;
+            for (let i = 0; i < finCount; i++) {
+                const fin = new THREE.Mesh(finGeo, material);
+                const angle = thetaStart + (i / finCount) * Math.PI;
+                fin.position.x = Math.cos(angle) * 2.85;
+                fin.position.z = Math.sin(angle) * 2.85;
+                fin.rotation.y = -angle;
+                group.add(fin);
+            }
+            return group;
+        }
+
+        function setupWidgetInteraction() {
+            const widgetCard = document.getElementById('widget-card');
+            const btnShrink = document.getElementById('btn-shrink');
+            const btnExplode = document.getElementById('btn-explode-toggle');
+            const explodeStatus = document.getElementById('explode-status');
+            const btnRotate = document.getElementById('btn-rotate-toggle');
+            const rotateStatus = document.getElementById('rotate-status');
+            const btnResetCam = document.getElementById('btn-reset-cam');
+
+            // Open on click when compact
+            widgetCard.addEventListener('click', (e) => {
+                if (!isWidgetExpanded) {
+                    toggleWidgetState(true);
+                }
+            });
+
+            // Shrink back to icon
+            if (btnShrink) {
+                btnShrink.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleWidgetState(false);
+                });
+            }
+
+            if (btnExplode) {
+                btnExplode.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    isExploded = !isExploded;
+                    explodeStatus.className = isExploded ? 'w-2 h-2 rounded-full bg-[rgb(4,171,235)]' : 'w-2 h-2 rounded-full bg-gray-500';
+                });
+            }
+
+            if (btnRotate) {
+                btnRotate.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    autoRotate = !autoRotate;
+                    rotateStatus.className = autoRotate ? 'w-2 h-2 rounded-full bg-emerald-400' : 'w-2 h-2 rounded-full bg-gray-500';
+                });
+            }
+
+            if (btnResetCam) {
+                btnResetCam.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    motorGroup.rotation.set(0.4, -0.5, 0);
+                });
+            }
+        }
+
+        function toggleWidgetState(expand) {
+            const card = document.getElementById('widget-card');
+            const compactBadge = document.getElementById('compact-badge');
+            const btnShrink = document.getElementById('btn-shrink');
+            const controls = document.getElementById('expanded-controls');
+            const container = document.getElementById('canvas-container');
+
+            isWidgetExpanded = expand;
+
+            if (isWidgetExpanded) {
+                card.classList.remove('w-24', 'h-24', 'hover:scale-105');
+                card.classList.add('w-80', 'sm:w-88', 'h-[400px]');
+                container.classList.remove('h-full');
+                container.classList.add('h-64');
+                compactBadge.classList.add('hidden');
+                btnShrink.classList.remove('hidden');
+                controls.classList.remove('hidden');
+            } else {
+                card.classList.remove('w-80', 'sm:w-88', 'h-[400px]');
+                card.classList.add('w-24', 'h-24', 'hover:scale-105');
+                container.classList.remove('h-64');
+                container.classList.add('h-full');
+                compactBadge.classList.remove('hidden');
+                btnShrink.classList.add('hidden');
+                controls.classList.add('hidden');
+            }
+
+            // Sync WebGL size during smooth container transition
+            setTimeout(resizeThreeCanvas, 50);
+            setTimeout(resizeThreeCanvas, 250);
+            setTimeout(resizeThreeCanvas, 500);
+        }
+
+        function resizeThreeCanvas() {
+            const container = document.getElementById('canvas-container');
+            if (!container || !renderer || !camera) return;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            if (width === 0 || height === 0) return;
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height, false);
+        }
+
+        function onWindowResize() {
+            resizeThreeCanvas();
+        }
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+
+            if (autoRotate && !isDragging) {
+                motorGroup.rotation.y += 0.005;
+            }
+
+            // Exploded view animation logic
+            const targetExplodeDist = isExploded ? 2.2 : 0.0;
+            statorHalf1.position.x += (-targetExplodeDist - statorHalf1.position.x) * 0.05;
+            statorHalf2.position.x += (targetExplodeDist - statorHalf2.position.x) * 0.05;
+
+            if (rotor) {
+                rotor.rotation.z -= 0.03;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        window.onload = function () {
+            init3D();
+        };
+    </script>
+</body>
+</html>
